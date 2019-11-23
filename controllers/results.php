@@ -1,6 +1,10 @@
 <?php
 
   if(isset($_POST["irate"]) && isset($_POST["loan"]) && isset($_POST["npay"])){
+    $calendar='';
+    $totalpay=0;
+    $month=11;
+    $year=2019;
     $rate = $_POST["irate"]/100;
     $fv = 0;
     $pv = -$_POST["loan"];
