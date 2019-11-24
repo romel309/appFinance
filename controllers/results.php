@@ -5,6 +5,8 @@
     $totalpay=0;
     $month=11;
     $year=2019;
+    $labels="";
+    $data="";
     $rate = $_POST["irate"]/100;
     $fv = 0;
     $pv = -$_POST["loan"];

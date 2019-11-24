@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <script lang="javascript" src="../dist/xlsx.full.min.js"></script>
   <script lang="javascript" src="../dist/FileSaver.min.js"></script>
+  <script lang="javascript" src="../dist/Chart.js"></script>
   <link rel='stylesheet' type='text/css' href='../dist/fullcalendar.css' />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
@@ -182,16 +183,30 @@
                           $calendar=$calendar."\t".'title: \''.$totalpay.'\',start: \''.$year.'-'.$month.'-25\',end: \''.$year.'-'.$month.'-25\'';
                           $calendar=$calendar."\n }, \n";
                           $month=$month+1;
+                          $k=$i+1;
+                          if($i==$size-1){
+                            $labels=$labels."'".$k."'";
+                            $data=$data."".$totalpay."";
+                          }
+                          else{
+                            $labels=$labels."'".$k."',";
+                            $data=$data."".$totalpay.",";
+                          }
                         ?>
                         <?php } ?>
                       </tbody>
                     </table>
-                    <button id="button-a" class="btn btn-primary">Create Excel</button>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <button id="button-a" class="btn btn-success">Create Excel</button>
+                    <!-- Button calendar -->
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
                       Calendar
                     </button>
-                    <!-- Modal -->
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#chartModal">
+                      Chart
+                    </button>
+
+                    <!-- Modal Calendar -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -210,6 +225,70 @@
                         </div>
                       </div>
                     </div>
+                    <!-- End Modal Calendar-->
+
+                    <!-- Modal Charts -->
+                    <div class="modal fade" id="chartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Chart</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Modal Chart-->
+
+
+                    
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+     type: 'line',
+    data: {
+        labels: [<?php echo $labels;?>],
+        datasets: [{
+            label: 'Payments',
+            data: [<?php echo $data;?>],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
                   </div>
                 </div>
               </div>
